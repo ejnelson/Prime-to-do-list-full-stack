@@ -1,6 +1,1 @@
-#Pet hotel
-
-*Jake
-*Nolan
-*Ahkillah
-*Erik Nelson
+#todo app-full stack
