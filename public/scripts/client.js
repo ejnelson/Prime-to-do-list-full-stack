@@ -1,168 +1,167 @@
-
+var timer=setInterval(updateTimes,1000);
+var allIds=[];
 $(function(){
-  // console.log('JQ here');
-
-
-
-  getPets();
-  getOwner();
-  getStatus();
-  $('#ownerReg').on('submit', regOwner);
-
-
-  $('#addPet').on('submit',regPet);
-  $('#petTable').on('click', '.update', updatePet);
-  $('#petTable').on('click', '.delete', deletePet);
-  $('#petTable').on('click', '.checkIn', changeStatus);
+// $(document).on('click','.delete', deleteTodo);
+$(document).on('click','.check', toggleTodo);
+getTodo();
+$('#taskInput').on('submit',sendTodo);
+$(document).on('click','.delete', function(){
+  var id=$(this).closest('.todoitem').data('id');
+  toggleQuestion(id);
 });
 
-function regOwner(event){
+ $(document).on('click','.task', function(){
+  var hider=$(this).parent().find('.hider');
+  if(hider.hasClass('up')){
+    hider.slideDown();
+    hider.toggleClass('up');
+  }else{
+    hider.slideUp();
+    hider.toggleClass('up');
+  }
+ });
+
+$(document).on('click','#dateButton',submitDate);
+
+$('#yes').on('click', deleteTodo);
+$('#no').on('click', toggleQuestion);
+
+$('.overlay').on('click', toggleQuestion);
+});
+
+function getTimeRemaining(endtime){
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor( (t/1000) % 60 );
+  var minutes = Math.floor( (t/1000/60) % 60 );
+  var hours = Math.floor( (t/(1000*60*60)) % 24 );
+  var days = Math.floor( t/(1000*60*60*24) );
+  return {
+    'total': t,
+    'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+
+
+
+function updateTimes(){
+  allIds.forEach(function(id){
+ var timeObject=getTimeRemaining($('#datepick.'+id).val())
+ if(!timeObject.days){timeObject.days=0;timeObject.hours=0;timeObject.minutes=0;timeObject.seconds=0};
+$('span.time#'+id).text(timeObject.days+':'+timeObject.hours+':'+timeObject.minutes+':'+timeObject.seconds)
+
+
+
+    $('span.time#'+id).text();
+  });
+
+}
+function submitDate(event){
   event.preventDefault();
-  var newOwner = $(this).serialize();
-  console.log('new Owner:', newOwner);
+var dateObject={};
+  var id=$(this).data('id');
+  dateObject.date = $(this).parent().find('#datepick').val();
+  console.log(dateObject);
   $.ajax({
-    url:'/router/owners',
-    type:'POST',
-    data: newOwner,
-    success: getOwner
-  })
-}
-
-function getOwner(){
-  $.ajax({
-    url: '/router/owners',
-    type: 'GET',
-    success: showOwner
-
-
-  })
-}
-
-function showOwner(owners){
-  console.log(owners);
-  $('#select').empty();
-  owners.forEach(function(owner){
-    var $owner = $('<option>' + owner.first_name + " " + owner.last_name + '</option>');
-    $owner.data("id", owner.id);
-    $('#select').append($owner);
-  });
-}
-function regPet(event){
-  event.preventDefault();
-  var newPet = $(this).serialize();
-  var ownerId = $("select option:selected").data('id');
-  newPet += '&id=' + ownerId;
-  // console.log(newPet);
-  $.ajax({
-    url: '/router/pet',
-    type: 'POST',
-    data: newPet,
-    success: getPets
-  });
-
-}
-
-function getPets(pets){
-  // console.log('pets');
-  $.ajax({
-    url: '/router/pet',
-    type: 'GET',
-    success: showPets
-  });
-}
-function showPets(pets){
-  // console.log('asdfpets');
-  $('#petTable').empty();
-  pets.forEach(function(pet){
-    // console.log(pet.name+' '+pet.id);
-    var $pet = $('<form class="coolform"></form>');
-    var $petOwner = $('<td>' + pet.first_name + " " + pet.last_name +'</td>');
-    var $petName = $('<td><input type = "text" name = petName value = "' + pet.name + '"/></td>');
-    var $petBreed = $('<td><input type = "text" name = petBreed value = "' + pet.breed + '"/></td>');
-    var $petColor = $('<td><input type = "text" name = petColor value = "' + pet.color + '"</td>');
-    var $petUpdate = $('<td>' +'<button id="'+pet.id+'" class="btn btn-default update">Update</button>' + '</td>');
-    var $petDelete = $('<td>' + '<button id="'+pet.id+'"  class="btn btn-default delete">Delete</button>'+ '</td>');
-    var $petCheckIn_CheckOut = $('<td>' + '<button data-id='+pet.id+' id="update'+pet.id+'" class="btn btn-default checkIn">Check In</button>'+ '</td>');
-    $pet.append($petOwner);
-    $pet.append($petName);
-    $pet.append($petBreed);
-    $pet.append($petColor);
-    $pet.append($petUpdate);
-    $pet.append($petDelete);
-    $pet.append($petCheckIn_CheckOut);
-
-
-    $('#petTable').append($pet);
-  });
-}
-
-function updatePet(event){
-  event.preventDefault();
-  var $updateButton = $(this);
-
-  var $form = $updateButton.closest('form');
-  var data = $form.serialize();
-  // console.log(data);
-  $.ajax({
-    url: 'router/pet/'+$updateButton.attr('id'),
+    url: '/dateupdate/'+id,
     type: 'PUT',
-    data: data,
-    success: getPets
+    data:dateObject,
+    success: getTodo
   });
 }
-
-function deletePet(event) {
-  event.preventDefault();
-
-
-  $.ajax({
-    url: 'router/pet/' + $(this).attr('id'),
-    type: 'DELETE',
-    success: getPets
-  });
+function toggleQuestion(id){
+  if(id!=null){
+  $('#yes').data('id',id);
+  }
+  $('.question').toggleClass('visible');
+  $('.overlay').toggleClass('visible');
 
 }
 
-function getStatus(){
+function getTodo(){
+
   $.ajax({
-    url: '/router/visits',
+    url: '/router',
     type: 'GET',
-    success: showStatus
+    success: showTodo
   });
 }
+function showTodo(list){
+    $('#tasks').empty();
+    var classer='';
+    var date='';
+  list.forEach(function(item){
 
-function showStatus(stata) {
-  stata.forEach(function(statusObj){
-    var text = "";
-    var status = {};
-    if(statusObj.check_in_date == null){
-      text = "Check In";
-      status.state = "in";
-    } else if (statusObj.check_out_date == null) {
-      text = "Check Out";
-      status.state = "out";
-    } else {
-      text = "Check Out";
-      status.state = "out";
+    if(item.complete==1){
+      classer='checked';
+    }else{
+      classer='unchecked';
     }
+    if(item.date!=null){
+      var dateString=item.date.toString().slice(0,10);
+      console.log(dateString);
+    }
+    allIds.push(item.id);
+    var $stuff=$(
+                  '<div class="col-xs-12 todoitem '+classer+'" data-check="'+item.complete+'" data-id="'+item.id+'">'+
+                    '<button class="check"><span class="glyphicon glyphicon-ok-circle"></span></button>'+
+                    '<span class="task" ondblclick="dblclick()">'+item.task+'</span>'+
+                    '<button class="delete"><span class="glyphicon glyphicon-ban-circle"></span></button>'+
+                    '<form class="hider up date" name="date" >Due on:<input name="datepick" id="datepick" class="'+item.id+'" value="'+dateString+'"type="date"/>'+
+                    '<button type="submit" class="btn btn-submit" id="dateButton" data-id="'+item.id+'">submit date</button><span id="'+item.id+'" class="time"></span></form>'+
+                  '</div>'
 
-    $("#update"+statusObj.pets_id).data('status', status);
+                );
 
-    $("#update"+statusObj.pets_id).html(text);
-    console.log(text);
-    console.log(statusObj.pets_id);
-    console.log(statusObj.check_out_date);
-    console.log(statusObj.check_in_date);
+    $('#tasks').append($stuff);
   });
 }
-
-function changeStatus(event) {
+function dblclick(){
+  console.log('double');
+}
+function sendTodo(event){
   event.preventDefault();
 
+  var data=$(this).serialize();
   $.ajax({
-    url: 'router/visits/' + $(this).attr('id'),
+    url: '/router',
+    type: 'POST',
+    data: data,
+    success: getTodo
+  });
+  $(this).find('input').val('');
+}
+
+function deleteTodo(){
+  var id=$(this).data('id');
+  console.log(id);
+  $('.question').toggleClass('visible');
+  $('.overlay').toggleClass('visible');
+  $.ajax({
+    url: '/router/'+id,
+    type: 'DELETE',
+    success: getTodo
+  });
+}
+function toggleTodo(){
+  var id=$(this).closest('.todoitem').data('id');
+  var check=$(this).closest('.todoitem').data('check');
+  $(this).closest('.todoitem').toggleClass('checked');
+  var send={};
+console.log(check);
+  if(check==0){
+    $(this).closest('.todoitem').data('check',1);
+    send.complete=1;
+  }else{
+    $(this).closest('.todoitem').data('check',0);
+    send.complete=0;
+  }
+  $.ajax({
+    url: '/router/'+id,
     type: 'PUT',
-    data: $(this).data('status');
-    success: getStatus
+    data:send,
+    success: getTodo
   });
 }

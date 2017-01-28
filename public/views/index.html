@@ -1,65 +1,34 @@
 <!doctype html>
 <html>
   <head>
-    <title>Pet hotel</title>
+    <title>ToDo</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:100" rel="stylesheet">
     <script src="/vendor/jquery.min.js"></script>
     <script src="/scripts/client.js"></script>
-    <link rel="stylesheet" href="/vendor/bootstrap.min.css" />
+    <link rel="stylesheet" href="/styles/bootstrap.min.css" />
     <link rel="stylesheet" href="styles/styles.css"  />
   </head>
   <body>
 
-      <h1 class="col-xs-12">Owners and Pets</h1>
-
-
     <div class="container">
-      <!-- <div class="row ">
-        <h1 class="col-xs-12">Owners and Pets</h1>
-      </div> -->
-      <div class="row ">
-      <h2 class="col-xs-12">Owner Registration</h2>
-        <form id="ownerReg">
-          <label for="firstName" class="col-xs-4 col-md-2">First Name</label>
-          <input type="text" id="firstName" name="firstName" class="col-xs-8 col-md-4"/>
-          <label for="lastName" class="col-xs-4 col-md-2">Last Name</label>
-          <input type="text" id="lastName" name="lastName" class="col-xs-8 col-md-4"/>
-          <button class="btn btn-default col-xs-2 col-xs-offset-5" type="submit" name="regButton">Register</button>
-        </form>
-      </div>
-      <div class="row ">
-      <h2 class="col-xs-12">Pets</h2>
+      <div class="flexbox col-xs-12">
+        <div class="formdiv col-xs-12 col-sm-10 col-md-8 col-md-offset-1">
+          <form id="taskInput" autocomplete="off">
+            <input type="text" placeholder="ToDo" name="todo" />
+          </form>
+        </div>
+        <div id="tasks" class="col-xs-12 col-sm-10 col-md-8 col-md-offset-1">
 
-        <form id="addPet">
-            <label for="ownerName" class="col-xs-4 col-md-2">Owner Name</label>
-            <select id = "select" name="ownerName" class="col-xs-8 col-md-4">
-              <!-- space for options to be appended -->
-
-            </select>
-            <label for="petName" class="col-xs-4 col-md-2">Pet Name</label>
-            <input type="text" id="petName" name="petName" class="col-xs-8 col-md-4"/>
-            <label for="breed" class="col-xs-4 col-md-2">Breed</label>
-            <input type="text" id="breed" name="breed" class="col-xs-8 col-md-4"/>
-            <label for="color" class="col-xs-4 col-md-2">Color</label>
-            <input type="text" id="color" name="color" class="col-xs-8 col-md-4"/>
-          <button class="btn btn-primary col-xs-2 col-xs-offset-5" type="submit" name="petButton">Add Pet</button>
-        </form>
+        </div>
       </div>
-      <div class="table-responsive">
-        <table class="table table-hover table-striped">
-          <tr>
-            <th>Owner</th>
-            <th>Pet</th>
-            <th>Breed</th>
-            <th>Color</th>
-            <th>Update</th>
-            <th>Delete</th>
-            <th>Check in/out</th>
-          </tr>
-        </table>
-        <table id = "petTable" class="table table-hover table-striped">
-        </table>
-      </div>
-
     </div>
+    <div class="question">
+      <p>
+      Are you sure you want to delete?
+      </p>
+      <button id="yes" class="btn-danger btn">Delete</button>
+      <button id="no" class="btn-default btn">Cancel</button>
+    </div>
+    <div class="overlay"></div>
   </body>
 </html>

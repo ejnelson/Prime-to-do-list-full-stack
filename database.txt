@@ -1,29 +1,6 @@
-CREATE TABLE owners (
+CREATE TABLE todo (
   id SERIAL PRIMARY KEY,
-  first_name VARCHAR(100),
-  last_name VARCHAR(100)
+  task TEXT,
+  complete INTEGER,
+  date DATE
 );
-
-CREATE TABLE pets(
-  id SERIAL PRIMARY KEY,
-  name VARCHAR(100),
-  breed VARCHAR(100),
-  color VARCHAR(100),
-  owners_id integer REFERENCES owners
-);
-
-CREATE TABLE visits (
-  id SERIAL PRIMARY KEY,
-  check_in_date DATE,
-  check_out_date DATE,
-  pets_id integer REFERENCES pets
-);
-
-INSERT INTO owners (first_name, last_name)
-VALUES ('Erik', 'Nelson');
-
-INSERT INTO pets (name, breed, color, owners_id)
-VALUES ('Oliver', 'Schnoodle', 'grey', 1);
-
-INSERT INTO visits (check_in_date, check_out_date, pets_id)
-VALUES ('2000-11-06', '2000-12-20', 1);

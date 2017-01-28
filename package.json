@@ -1,7 +1,7 @@
 {
-  "name": "upsilon-pet-hotel",
+  "name": "upsilon-weekend-4-challenge",
   "version": "1.0.0",
-  "description": "pet hotel",
+  "description": "weekend 4 challenge",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

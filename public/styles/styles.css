@@ -1,49 +1,169 @@
 body{
-  margin:none;
-  font-family:'Helvetica',serif;
+  background-color: rgb(32, 32, 32);
+  box-shadow:inset 0 0 300px rgba(0, 0, 0,0.8)
 }
-h2{
-  margin:10px;
+html,body{
+  height:100%;
+  width:100%;
 }
-h1{
-  font-size:35px;
-}
-input,select {
-  background-color:rgb(222, 222, 222);
-  border:none;
-}
-label{
-  text-align: right;
-}
-.table-responsive{
-  margin-top:20px;
+.container{
+  height:100%;
 
 }
-#addPet label{
+
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+    color:    #606060;
+    transition:0.2s all;
+}
+form{
+}
+.task:hover{
+  color:rgb(180, 180, 180);
+  transition:0.2s all;
+  cursor:pointer;
+}
+input{
+  background-color: transparent;
+  border:none;
+  border-bottom:3px solid black;
+  font-size:50px;
+  color:    #606060;
+  font-family:'Raleway',sans-serif;
+  font-weight: 100;
+  width:100%;
+}
+input:focus,button:focus{outline:0;}
+input:hover::-webkit-input-placeholder{
+  color:white;
+}
+.flexbox{
+  display: flex;
+  justify-content:center;
+  align-items: center;
+  height:100%;
+  width:100%;
+  flex-direction:column;
+
+}
+.todoitem{
+margin:5px auto;
+font-size:20px;
+}
+/*.todoitem:hover{
+  background-color: rgb(52, 52, 52);
+}*/
+#complete{
+  bottom:0px;
+}
+@font-face {
+    font-family: 'Glyphicons Halflings';
+    src: url('../vendor/fonts/glyphicons-halflings-regular.eot');
+    src: url('../vendor/fonts/glyphicons-halflings-regular.eot?#iefix') format('embedded-opentype'), url('../vendor/fonts/glyphicons-halflings-regular.woff') format('woff'), url('../vendor/fonts/glyphicons-halflings-regular.ttf') format('truetype'), url('../vendor/fonts/glyphicons-halflings-regular.svg#glyphicons-halflingsregular') format('svg');
+}
+.delete{
+  float:right;
+  transition:0.2s all;
+}
+.time{
+  float:right;
   font-size:12px;
+  margin-top:8px;
+}
+.delete:hover{
+  color:red;
+}
+.check{
+  transition:0.2s all;
+}
+.check:hover{
+  color:green
 }
 button{
-  margin-top:15px;
+  background:transparent;
+  border:none;
 }
-input,label,select{
-  margin-bottom:5px;
-}
-.row:nth-child(2),.row:nth-child(1){
-  margin-bottom:10px;
-  padding-bottom:10px;
-  /*border-top:2px solid grey;*/
+#tasks{
+  height:auto;
+  display: flex;
+  justify-content:center;
+  flex-direction:column;
+  /*align-items: center;*/
 
-  padding-left:10px;
-  padding-right:10px;
 }
-h1{
-  background-color: rgb(255, 191, 28);
-  color:white;
-  margin-top:none;
+span{
+  margin-left:10px;
+}
+.checked{
+  transition:0.2s all;
+  text-decoration: line-through;
+  color:black;
+}
+.unchecked{
+    transition:0.2s all;
+}
+.hider{
+  display:none;
+}
+/*.date{
+  margin-left:60px;
+}*/
+input[type=date]{
+  font-size:20px;
+  border:none;
+  width:200px;
+
+}
+.formdiv{
+  min-height:75px;
+}
+.datepick{
+ padding-left:20px;
+  padding-right:30px;
+}
+.btn-submit{
+  background-color:rgb(157, 157, 157);
+  height:22px;
+  padding:3px 8px;
+  font-size:12px;
+}
+.btn-submit:hover{
+  background-color:rgb(197, 197, 197);
+}
+
+.question{
+  position:absolute;
+  font-family:'Helvetica',sans-serif;
+  font-weight: bold;
+  background-color: white;
+  z-index:4;
+  visibility:hidden;
+  opacity:0;
+  width:40%;
+  left:30%;
+  top:25%;
+  transform:translateY(-40%);
+  transition:all 0.5s ease-in-out;
   padding:20px;
-  top:-20px;
-  padding-left:20px;
 }
-.coolform{
-  display:table-row;
+.overlay{
+  position:fixed;
+  bottom:0px;
+  top:0px;
+  left:0px;
+  right:0px;
+  background-color: black;
+  opacity:0;
+  visibility:hidden;
+  z-index: 3;
+  transition:all 0.5s ease-in-out;
+
+}
+.question.visible{
+  opacity:1;
+  visibility: visible;
+    transform:translateY(0%);
+}
+.overlay.visible{
+  opacity:0.4;
+  visibility: visible;
 }
